@@ -2,7 +2,7 @@
   <!-- 用el-row el-col -->
   <el-row type="flex" jusitify="space-between" class="layout-header">
     <!-- span是给col的宽度 elementUI将页面分为24份 -->
-    <el-col class="left" :span="21">
+    <el-col class="left" :span="20">
       <i class="el-icon-s-unfold icon"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
@@ -11,7 +11,7 @@
       <el-dropdown trigger="click">
         <!-- 匿名插槽 -->
         <span class="el-dropdown-link">
-          姚鑫傻子
+          姚鑫我爱你啊
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -36,7 +36,7 @@ export default {}
   .left {
     .icon {
       font-size: 22px;
-      margin-right: 3px;
+      margin-right: 5px;
       vertical-align: middle;
     }
   }

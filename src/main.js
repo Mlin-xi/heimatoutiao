@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// 引入ui
+// 引入框架ui
 import Element from 'element-ui'
+// 引入自定义组件
+import Component from './components'
 
 // 引入样式
 import 'element-ui/lib/theme-chalk/index.css'
@@ -13,6 +15,8 @@ Vue.prototype.$axios = axios // 给Vue对象的原型属性赋值 那么所有vu
 Vue.config.productionTip = false
 // 使用ui
 Vue.use(Element)
+// 使用自定义组件
+Vue.use(Component)
 
 new Vue({
   router,

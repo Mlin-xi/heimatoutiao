@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './permission'
 // 引入框架ui
 import Element from 'element-ui'
 // 引入自定义组件

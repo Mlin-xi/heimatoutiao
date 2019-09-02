@@ -6,18 +6,18 @@
       <i class="el-icon-s-unfold icon"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
-    <el-col :span="3" class="right">
+    <el-col class="right" :span="3">
       <img class="head-img" :src="userInfo.photo? userInfo.photo:defaultImg" alt />
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" @command="handleMenuItem">
         <!-- 匿名插槽 -->
         <span class="el-dropdown-link">
           {{userInfo.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>git地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="account">个人信息</el-dropdown-item>
+          <el-dropdown-item command="git">git地址</el-dropdown-item>
+          <el-dropdown-item command="lgout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -47,6 +47,18 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    // 点击菜单项触发的方法
+    handleMenuItem (command) {
+      if (command === 'account') {
+        // 账号信息
+      } else if (command === 'git') {
+        // git地址
+        window.location.href = 'https://github.com/shuiruohanyu/82heimatoutiao'
+      } else {
+        window.localStorage.clear() // 清除缓存  清除所有的缓存 只能清除自己当前项目的缓存
+        this.$router.push('/login') // 跳转到登录页
+      }
     }
   },
   created () {
@@ -60,7 +72,7 @@ export default {
 .layout-header {
   //   display: flex;
   //   align-items: center;
-  padding: 10px 0;
+  padding: 15px 0;
   .left {
     .icon {
       font-size: 22px;
@@ -75,6 +87,7 @@ export default {
       border-radius: 50%;
       margin-right: 5px;
       width: 40px;
+      height: 40px;
     }
   }
 }

@@ -197,7 +197,7 @@ export default {
             .then(res => {
               console.log(res)
               // 如果成功了将身份证token存起来,下次再用就带着
-              window.localStorage.setItem('user-token', res.data.data.token)
+              window.localStorage.setItem('user-token', res.data.token)
               // 如果成功就(编程式导航)跳转到home页
               this.$router.push('/')
             })

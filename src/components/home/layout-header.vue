@@ -35,14 +35,15 @@ export default {
   methods: {
     // 获取用户数据
     getUserInfo () {
-      let token = window.localStorage.getItem('user-token') // 获取token
+      //   let token = window.localStorage.getItem('user-token') // 获取token
       this.$axios({
-        url: '/user/profile',
-        headers: { Authorization: `Bearer ${token}` }
+        url: '/user/profile'
+        // headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
+          //   debugger
           // console.log(res)
-          this.userInfo = res.data.data
+          this.userInfo = res.data
         })
         .catch(error => {
           console.log(error)

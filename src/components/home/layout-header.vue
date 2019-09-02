@@ -39,15 +39,14 @@ export default {
       this.$axios({
         url: '/user/profile'
         // headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        //   debugger
+        // console.log(res)
+        this.userInfo = res.data
       })
-        .then(res => {
-          //   debugger
-          // console.log(res)
-          this.userInfo = res.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      // .catch(error => {
+      //   console.log(error)
+      // })
     },
     // 点击菜单项触发的方法
     handleMenuItem (command) {

@@ -201,12 +201,12 @@ export default {
               // 如果成功就(编程式导航)跳转到home页
               this.$router.push('/')
             })
-            .catch(() => {
-              this.$message({
-                message: '手机号或者密码不正确',
-                type: 'warning'
-              })
-            })
+            // .catch(() => {
+            //   this.$message({
+            //     message: '手机号或者密码不正确',
+            //     type: 'warning'
+            //   })
+            // })
         }
       })
     }

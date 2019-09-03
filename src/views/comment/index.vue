@@ -1,0 +1,59 @@
+<template>
+  <!-- 最外层 用el-card卡片做页面 -->
+  <el-card>
+    <!-- 插槽内容 => 标题 -->
+    <bread-crumb slot="header">
+      <!-- 面包屑的具名插槽 -->
+      <template slot="title">评论列表</template>
+    </bread-crumb>
+    <!-- 表格 需要数据  :data -->
+    <el-table :data="list">
+      <!-- prop属性来渲染返回过来的数据 -->
+      <!-- el-table-column无法显示布尔类型的数据 所以要定义formatter来显示 -->
+      <el-table-column label="标题" width="700" prop="title"></el-table-column>
+      <el-table-column label="评论状态" prop="comment_status" :formatter="formatter"></el-table-column>
+      <el-table-column label="评论总数" prop="total_comment_count"></el-table-column>
+      <el-table-column label="粉丝评论" prop="fans_comment_count"></el-table-column>
+      <el-table-column label="操作">
+        <!-- 作用域插槽 slot-scope='变量' 变量 就是row column,$index.store的属性集合 obj.row -->
+        <template slot-scope="obj">
+          <el-button type="text" size="small">修改评论</el-button>
+          <el-button type="text" size="small">{{obj.row.comment_status ? '关闭评论':'打开评论'}}</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-card>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      list: []
+    }
+  },
+  methods: {
+    //   定义formatter方法
+    formatter (row) {
+      return row.comment_status ? '正常' : '关闭'
+    },
+    //   获取数据
+    getColumns () {
+      this.$axios({
+        //   query参数 就相当于get 路径参数 url参数 params
+        url: '/articles',
+        params: { response_type: 'comment' }
+      }).then(res => {
+        this.list = res.data.results
+        console.log(res)
+      })
+    }
+  },
+  created () {
+    this.getColumns()
+  }
+}
+</script>
+
+<style>
+</style>

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './permission'
 // 引入框架ui
 import Element from 'element-ui'
-// 引入自定义组件
+// 引入全局自定义组件
 import Component from './components'
 
 // 引入样式

@@ -6,7 +6,8 @@
       <i class="el-icon-s-unfold icon"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
-    <el-col class="right" :span="3">
+    <el-col class="right" :span="4">
+      <!-- 不加:传的就是字符串 -->
       <img class="head-img" :src="userInfo.photo? userInfo.photo:defaultImg" alt />
       <el-dropdown trigger="click" @command="handleMenuItem">
         <!-- 匿名插槽 -->
@@ -14,6 +15,7 @@
           {{userInfo.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
+        <!-- 具名插槽 -->
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="account">个人信息</el-dropdown-item>
           <el-dropdown-item command="git">git地址</el-dropdown-item>

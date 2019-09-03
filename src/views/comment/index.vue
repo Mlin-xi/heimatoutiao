@@ -18,7 +18,12 @@
         <!-- 作用域插槽 slot-scope='变量' 变量 就是row column,$index.store的属性集合 obj.row -->
         <template slot-scope="obj">
           <el-button type="text" size="small">修改评论</el-button>
-          <el-button type="text" size="small">{{obj.row.comment_status ? '关闭评论':'打开评论'}}</el-button>
+          <el-button
+            type="text"
+            size="small"
+            :style="{color:obj.row.comment_status ? '#E6A23C':'#409EFF'}"
+            @click="openOrClose(obj.row)"
+          >{{obj.row.comment_status ? '关闭评论':'打开评论'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -33,6 +38,22 @@ export default {
     }
   },
   methods: {
+    //   打开或者关闭
+    openOrClose (row) {
+      let mess = row.comment_status ? '关闭' : '打开'
+      this.$confirm(`您是否要${mess}评论`, '提示').then(() => {
+        // 调用接口
+        this.$axios({
+          method: 'put',
+          url: '/comments/status',
+          params: { article_id: row.id.toString() }, // 传递articleId参数
+          data: { allow_comment: !row.comment_status } // 取反 因为当前结果如果是true 只能改成false,如果false 改成true
+        }).then(res => {
+          //   console.log(res)
+          this.getColumns() // 成功之后重新调用,拉取数据的方法
+        })
+      })
+    },
     //   定义formatter方法
     formatter (row) {
       return row.comment_status ? '正常' : '关闭'
@@ -45,7 +66,7 @@ export default {
         params: { response_type: 'comment' }
       }).then(res => {
         this.list = res.data.results
-        console.log(res)
+        // console.log(res)
       })
     }
   },

@@ -5,9 +5,16 @@ import router from '../permission'
 import {
   Message
 } from 'element-ui'
+import jsonBigInt from 'json-bigint'
 
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 赋值基础地址
 
+axios.defaults.transformResponse = [function (data) {
+  // data 是响应回来的字符串
+  let me = jsonBigInt.parse(data)
+  // debugger
+  return me
+}]
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
   // config是axios的默认请求配置 和传入的配置 结合出来的

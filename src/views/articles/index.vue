@@ -30,17 +30,17 @@
       </el-form-item>
     </el-form>
     <!-- 页面结构 -->
-    <div class="total-info">共找到3456条符合条件的内容</div>
+    <div class="total-info">共找到{{list.total_count}}条符合条件的内容</div>
     <div class="article-list">
       <!-- 循环 -->
       <div v-for="(item,index) in list" :key="index" class="article-item">
         <!-- 左侧 -->
         <div class="left">
-          <img src="../../assets/img/404.png" alt />
+          <img :src="item.cover.images.length ? item.cover.images[0] : defaultImg" alt />
           <div class="info">
-            <span class="title">有内鬼</span>
-            <el-tag style="width:60px">已发布</el-tag>
-            <span class="date">2019-09-03 08:15:26</span>
+            <span class="title">{{item.title}}</span>
+            <el-tag style="width:60px">{{item.status | statusText}}</el-tag>
+            <span class="date">{{item.pubdate}}</span>
           </div>
         </div>
         <!-- 右侧 -->
@@ -61,7 +61,53 @@
 export default {
   data () {
     return {
-      list: [1, 2, 3] // 定义一个空数组
+      list: [], // 定义一个空数组
+      defaultImg: require('../../assets/img/default-cover.jpg')
+    }
+  },
+  methods: {
+    // 请求内容信息
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(res => {
+        // console.log(res)
+        this.list = res.data.results
+      })
+    }
+  },
+  created () {
+    this.getArticles()
+  },
+  filters: {
+    //   定义一个过滤器 过滤状态
+    statusText: function (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+
+    // 定义过滤器类型
+    statusType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return 'success'
+        case 3:
+          return 'danger'
+      }
     }
   }
 }

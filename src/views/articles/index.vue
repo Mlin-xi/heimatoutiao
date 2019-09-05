@@ -38,7 +38,7 @@
     </el-form>
     <!-- {{searchForm.status}}{{searchForm.channels_id}} {{searchForm.dateRange}} -->
     <!-- 页面结构 -->
-    <div class="total-info">共找到222条符合条件的内容</div>
+    <div class="total-info">共找到{{page.total}}条符合条件的内容</div>
     <div class="article-list">
       <!-- 循环 -->
       <div v-for="(item,index) in list" :key="index" class="article-item">
@@ -62,6 +62,16 @@
         </div>
       </div>
     </div>
+    <el-row type="flex" justify="center" style="margin:10px">
+      <el-pagination
+        @current-change="changePage"
+        layout="prev, pager, next"
+        :total="page.total"
+        :current-page="page.page"
+        :page-size="page.pageSize"
+        background
+      ></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -77,12 +87,29 @@ export default {
         channels_id: null, // 默认给一个空 因为打开页面时是没有筛选的
         dateRange: [] // 数组 [开始时间,结束时间][1,2]
       },
-      channels: []
+      channels: [],
+      //   分页设置
+      page: {
+        page: 1,
+        pageSize: 10,
+        total: 0
+      }
     }
   },
   methods: {
+    //   页码改变
+    changePage (newPage) {
+      this.page.page = newPage // 赋值新页码
+      this.getConditionArticles()
+    },
     // 定义筛选条件改变的事件
     changeCondition () {
+      this.page.page = 1
+      this.getConditionArticles()
+    },
+    // 根据条件查询数据
+    getConditionArticles () {
+      // 组合条件+ 页码  状态/频道/日期区间 每页条数/页码
       let params = {
         status: this.searchForm.status === 5 ? null : this.searchForm.status,
         channel_id: this.searchForm.channels_id,
@@ -93,12 +120,14 @@ export default {
         end_pubdate:
           this.searchForm.dateRange.length > 1
             ? this.searchForm.dateRange[1]
-            : null
+            : null,
+        page: this.page.page,
+        per_page: this.page.pageSize
       }
       this.getArticles(params)
     },
-    //   获取文章频道
-    // 传params是为了在筛选条件时调用次方法
+    //   获取频道数据
+
     getChannels () {
       this.$axios({
         url: '/channels'
@@ -107,6 +136,7 @@ export default {
       })
     },
     // 请求内容信息
+    // 传params是为了在筛选条件时调用次方法
     getArticles (params) {
       this.$axios({
         url: '/articles',
@@ -114,6 +144,7 @@ export default {
       }).then(res => {
         // console.log(res)
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     }
   },

@@ -17,14 +17,16 @@
       <el-form-item label="内容" prop="content">
         <el-input type="textarea" :rows="4" v-model="formData.content"></el-input>
       </el-form-item>
-      <el-form-item label="封面" v-model="formData.cover.type">
-        <el-radio :label="1">单图</el-radio>
-        <el-radio :label="3">三图</el-radio>
-        <el-radio :label="0">无图</el-radio>
-        <el-radio :label="-1">自动</el-radio>
+      <el-form-item label="封面">
+        <el-radio-group v-model="formData.cover.type">
+          <el-radio :label="1">单图</el-radio>
+          <el-radio :label="3">三图</el-radio>
+          <el-radio :label="0">无图</el-radio>
+          <el-radio :label="-1">自动</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item prop="channel_id" label="频道" v-model="formData.channel_id">
-        <el-select>
+      <el-form-item prop="channel_id" label="频道">
+        <el-select v-model="formData.channel_id">
           <!-- label(显示值)  value(真实值) -->
           <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -86,8 +88,18 @@ export default {
     },
     // 发布文章
     publish () {
-      this.$refs.publishForm.validate(function (isOk) {
+      this.$refs.publishForm.validate(isOk => {
         if (isOk) {
+          // 请求接口
+          this.$axios({
+            method: 'post',
+            url: '/articles',
+            params: { draft: false }, // draft 为true时 就是草稿
+            data: this.formData // 传formData数据
+          }).then(() => {
+            // 编程式导航
+            this.$router.push('/home/articles') // 跳转到文章列表页面
+          })
         }
       })
     }

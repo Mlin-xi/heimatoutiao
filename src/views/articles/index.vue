@@ -4,7 +4,7 @@
       <template slot="title">内容管理</template>
     </bread-crumb>
     <!-- 搜索工具栏 -->
-    <el-form>
+    <el-form style="margin-left:40px">
       <el-form-item label="全部图文"></el-form-item>
       <el-form-item label="文章状态:">
         <!-- {{searchForm.status}} -->
@@ -18,8 +18,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="频道列表:">
-        <!-- {{searchForm.channels_id}} -->
-        <el-select @change="changeCondition" v-model="searchForm.channels_id">
+        <!-- {{searchForm.channel_id}} -->
+        <el-select @change="changeCondition" v-model="searchForm.channel_id">
           <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
@@ -56,7 +56,7 @@
           <span>
             <i class="el-icon-edit"></i>修改
           </span>
-          <span @click="delItem">
+          <span @click="delItem(item)">
             <i class="el-icon-delete"></i>删除
           </span>
         </div>
@@ -84,7 +84,7 @@ export default {
       searchForm: {
         // 定义一个表单数据
         status: 5, // 状态
-        channels_id: null, // 默认给一个空 因为打开页面时是没有筛选的
+        channel_id: null, // 默认给一个空 因为打开页面时是没有筛选的
         dateRange: [] // 数组 [开始时间,结束时间][1,2]
       },
       channels: [],
@@ -126,7 +126,7 @@ export default {
       // 组合条件+ 页码  状态/频道/日期区间 每页条数/页码
       let params = {
         status: this.searchForm.status === 5 ? null : this.searchForm.status,
-        channel_id: this.searchForm.channels_id,
+        channel_id: this.searchForm.channel_id,
         begin_pubdate:
           this.searchForm.dateRange.length > 0
             ? this.searchForm.dateRange[0]

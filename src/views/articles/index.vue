@@ -56,7 +56,7 @@
           <span>
             <i class="el-icon-edit"></i>修改
           </span>
-          <span>
+          <span @click="delItem">
             <i class="el-icon-delete"></i>删除
           </span>
         </div>
@@ -97,6 +97,20 @@ export default {
     }
   },
   methods: {
+    //   删除评论
+    delItem (item) {
+      this.$confirm('您是否要删除此文章?', '提示').then(() => {
+        // 确定删除
+        this.$axios({
+          // item.id 长度超过安全限制 => bigNumber类型 => toString() 形成正确的结构
+          url: `/articles/${item.id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+          // 重新拉取数据
+          this.getConditionArticles() // 获取筛选的数据
+        })
+      })
+    },
     //   页码改变
     changePage (newPage) {
       this.page.page = newPage // 赋值新页码

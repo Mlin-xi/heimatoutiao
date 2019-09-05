@@ -3,6 +3,10 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+    <!-- 上传组件 -->
+    <el-upload :show-file-list="false" class="upload-btn" :http-request="uploadImg" action>
+      <el-button size="small" type="primary">上传图片</el-button>
+    </el-upload>
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部素材" name="all">
         <!-- 全部素材 -->
@@ -11,7 +15,11 @@
           <el-card v-for="item in list" :key="item.id" class="img-card">
             <img :src="item.url" alt />
             <el-row type="flex" justify="space-around" class="operate">
-              <i class="el-icon-star-on" :style="{color:item.is_collected?'red':''}"></i>
+              <i
+                @click="collectOrCancel(item)"
+                class="el-icon-star-on"
+                :style="{color:item.is_collected?'red':''}"
+              ></i>
               <i @click="delImg(item)" class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
@@ -51,6 +59,37 @@ export default {
     }
   },
   methods: {
+    // 上传图片
+    // 选择完图片之后执行
+    uploadImg (params) {
+      // 定义formdata类型
+      let obj = new FormData()
+      obj.append('image', params.file)
+      this.$axios({
+        url: '/user/images', // 同样的地址 不同的类型
+        method: 'post',
+        data: obj
+      }).then(() => {
+        this.getMaterial() // 重新加载页面
+      })
+    },
+    // 收藏或者取消收藏
+    collectOrCancel (item) {
+      // 提示
+      let mess = item.is_collected ? '取消' : ''
+      this.$confirm(`您确定要${mess}收藏此图片吗?`, '提示').then(() => {
+        // 确定收藏或者取消收藏
+        this.$axios({
+          url: `user/images/${item.id}`,
+          method: 'put',
+          data: {
+            collect: !item.is_collected // 取相反
+          }
+        }).then(() => {
+          this.getMaterial() // 重新加载页面
+        })
+      })
+    },
     // 删除图片
     delImg (item) {
       this.$confirm('您确定要删除此图片吗?', '提示').then(() => {
@@ -102,6 +141,11 @@ export default {
 
 <style lang='less' scped>
 .material {
+  .upload-btn {
+    position: absolute;
+    right: 20px;
+    margin-top: -5px;
+  }
   .card-list {
     display: flex;
     flex-wrap: wrap;

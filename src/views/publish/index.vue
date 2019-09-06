@@ -27,7 +27,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <cover-image :images="formData.cover.images"></cover-image>
+        <cover-image @onClickImg="receiveImg" :images="formData.cover.images"></cover-image>
       </el-form-item>
       <el-form-item prop="channel_id" label="频道">
         <el-select v-model="formData.channel_id">
@@ -83,6 +83,23 @@ export default {
     }
   },
   methods: {
+    // 接收子组件cover传来的数据
+    receiveImg (url, index) {
+      // 拿到地址 更新images 需要知道更新的图片地址
+      // this.formData.cover.images = this.formData.cover.images.map(function (
+      //   item,
+      //   i
+      // ) {
+      //   if (i === index) {
+      //     return url
+      //   }
+      //   return item
+      // })
+      // xxxx  this.formData.cover.images[index] = url // 不是响应式的  不能使用
+      this.formData.cover.images = this.formData.cover.images.map((item, i) =>
+        i === index ? url : item
+      )
+    },
     // 切换封面类型 根据当前类型决定 images结构
     changeCoverType () {
       if (this.formData.cover.type === 1) {

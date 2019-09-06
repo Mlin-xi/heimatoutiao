@@ -19,7 +19,7 @@
         <quill-editor type="textarea" v-model="formData.content" style="height:400px;width:800px"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" style="margin-top:100px">
-        <el-radio-group v-model="formData.cover.type">
+        <el-radio-group @change="changeCoverType" v-model="formData.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
@@ -80,6 +80,16 @@ export default {
     }
   },
   methods: {
+    // 切换封面类型 根据当前类型决定 images结构
+    changeCoverType () {
+      if (this.formData.cover.type === 1) {
+        this.formData.cover.images = [''] // 有一张封面 待选择
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', ''] // 有一张封面 待选择
+      } else {
+        this.formData.cover.images = [] // 无图或者自动 没有内容
+      }
+    },
     // 存入草稿 :接口和数据publish都一样,只是params的draft不一样,所以公用一个方法,然后在方法上各自传上所需要的draft参数值
     //   获取数据
     getChannels () {

@@ -32,8 +32,9 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="publish">发表文章</el-button>
-        <el-button>存入草稿</el-button>
+        <el-button type="primary" @click="publish(false)">发表文章</el-button>
+        <!-- 添加一个存入草稿事件 -->
+        <el-button @click="publish(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -78,6 +79,7 @@ export default {
     }
   },
   methods: {
+    // 存入草稿 :接口和数据publish都一样,只是params的draft不一样,所以公用一个方法,然后在方法上各自传上所需要的draft参数值
     //   获取数据
     getChannels () {
       this.$axios({
@@ -87,14 +89,16 @@ export default {
       })
     },
     // 发布文章
-    publish () {
+    publish (draft) {
       this.$refs.publishForm.validate(isOk => {
         if (isOk) {
           // 校验成功后 请求接口
+          // 才管是新增还是修改
+          let { articleId } = this.$route.params // 获取id
           this.$axios({
-            method: 'post',
-            url: '/articles',
-            params: { draft: false }, // draft 为true时 就是草稿
+            method: articleId ? 'put' : 'post',
+            url: articleId ? `/articles/${articleId}` : '/articles',
+            params: { draft }, // draft 为true时 就是草稿
             data: this.formData // 传formData数据
           }).then(() => {
             // 编程式导航
@@ -103,6 +107,7 @@ export default {
         }
       })
     },
+
     // 通过id获取文章详情(修改的时候)
     getArticleById (articleId) {
       this.$axios({

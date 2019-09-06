@@ -24,10 +24,16 @@ export default new Router({
       path: 'material',
       component: () => import('./views/material')
     }, {
-      path: 'articles',
+      // 内容管理
+      path: 'articles/',
       component: () => import('./views/articles')
     }, {
+      // 发布文章
       path: 'publish',
+      component: () => import('./views/publish')
+    }, {
+      // 修改文章
+      path: 'publish/:articleId',
       component: () => import('./views/publish')
     }]
   },

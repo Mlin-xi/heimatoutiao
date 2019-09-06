@@ -53,7 +53,7 @@
         </div>
         <!-- 右侧 -->
         <div class="right">
-          <span>
+          <span @click="modifyItem(item)">
             <i class="el-icon-edit"></i>修改
           </span>
           <span @click="delItem(item)">
@@ -97,6 +97,11 @@ export default {
     }
   },
   methods: {
+    // 修改数据
+    modifyItem (item) {
+      // 跳转到发布页面
+      this.$router.push(`/home/publish/${item.id.toString()}`)
+    },
     //   删除评论
     delItem (item) {
       this.$confirm('您是否要删除此文章?', '提示').then(() => {

@@ -34,7 +34,7 @@
       <div class="logo">
         <img src="../../assets/img/logo_index.png" alt="黑马头条" />
       </div>
-      <!-- 表单验证给e-form加一个model属性 表示数据对象 -->
+      <!-- 表单验证给el-form加一个model属性 表示数据对象 -->
       <!-- res是为了选取loginForm绑定数据 -->
       <!-- rules是校验规则 -->
       <el-form style="margin-top:25px" :model="loginForm" ref="loginForm" :rules="loginRules">

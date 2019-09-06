@@ -53,6 +53,7 @@
         </div>
         <!-- 右侧 -->
         <div class="right">
+          <!-- 修改按钮添加一个事件 -->
           <span @click="modifyItem(item)">
             <i class="el-icon-edit"></i>修改
           </span>

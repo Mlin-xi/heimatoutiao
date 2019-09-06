@@ -90,7 +90,7 @@ export default {
     publish () {
       this.$refs.publishForm.validate(isOk => {
         if (isOk) {
-          // 请求接口
+          // 校验成功后 请求接口
           this.$axios({
             method: 'post',
             url: '/articles',
@@ -102,10 +102,25 @@ export default {
           })
         }
       })
+    },
+    // 通过id获取文章详情(修改的时候)
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(res => {
+        this.formData = res.data
+      })
     }
   },
   created () {
-    this.getChannels()
+    this.getChannels() // 获取频道
+    // 用解构来接收获取文章详情成功后的id
+    // this.$route.params 是取动态路由的
+    let { articleId } = this.$route.params
+    // 如果存在 说明是修改文章 通过id 获取当前的文章数据
+    if (articleId) {
+      this.getArticleById(articleId)
+    }
   }
 }
 </script>

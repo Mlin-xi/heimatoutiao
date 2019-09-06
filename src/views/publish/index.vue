@@ -3,6 +3,7 @@
     <bread-crumb slot="header">
       <template slot="title">发布文章</template>
     </bread-crumb>
+    <!-- {{formData}} 看全部 -->
     <!-- 表单 model 数据对象 rules 绑定规则 prop用来校验的 ref是校验全部的属性-->
     <el-form
       ref="publishForm"
@@ -15,9 +16,9 @@
         <el-input style="width:400px" v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <quill-editor type="textarea" :rows="4" v-model="formData.content"></quill-editor>
+        <quill-editor type="textarea" v-model="formData.content" style="height:400px;width:800px"></quill-editor>
       </el-form-item>
-      <el-form-item label="封面">
+      <el-form-item label="封面" style="margin-top:100px">
         <el-radio-group v-model="formData.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>

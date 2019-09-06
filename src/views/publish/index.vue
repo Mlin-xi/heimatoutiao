@@ -26,6 +26,9 @@
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item>
+        <cover-image :images="formData.cover.images"></cover-image>
+      </el-form-item>
       <el-form-item prop="channel_id" label="频道">
         <el-select v-model="formData.channel_id">
           <!-- label(显示值)  value(真实值) -->

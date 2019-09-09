@@ -19,7 +19,11 @@
         ></el-pagination>
       </el-row>
     </el-tab-pane>
-    <el-tab-pane label="上传图片" name="upload">配置管理</el-tab-pane>
+    <el-tab-pane label="上传图片" name="upload">
+      <el-upload class="avatar-uploader" action :show-file-list="false" :http-request="uploadImg">
+        <i class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -37,6 +41,30 @@ export default {
     }
   },
   methods: {
+    // 上传图片
+    uploadImg (params) {
+      // 定义formdata类型
+      // let obj = new FormData()
+      // obj.append('image', params.file)
+      // this.$axios({
+      //   url: '/user/images', // 同样的地址 不同的类型
+      //   method: 'post',
+      //   data: obj
+      // }).then(() => {
+      //   this.getMaterial() // 重新加载页面
+      // })
+      // 定义一个变量来接收图片
+      let obj = new FormData()
+      obj.append('image', params.file)
+      this.$axios({
+        url: '/user/images', // 同样的地址 不同的类型
+        method: 'post',
+        data: obj
+      }).then(res => {
+        // 成功之后获取上传成功后的地址
+        this.$emit('onSelectImg', res.data.url)
+      })
+    },
     //   选择一张图片
     selectImg (item) {
       // 获取图片地址 item.url
@@ -82,5 +110,28 @@ export default {
       height: 100%;
     }
   }
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

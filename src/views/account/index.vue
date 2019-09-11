@@ -1,8 +1,12 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <template slot="title">账户信息</template>
     </bread-crumb>
+    <el-upload action :http-request="uploadUserImg" :show-file-list="false">
+      <img class="head-image" :src="userInfo.photo || dafaultImg" art />
+    </el-upload>
+
     <!-- :model="userInfo" 表示要校验这个数据 -->
     <el-form label-width="100px" ref="userForm" :model="userInfo" :rules="userRules">
       <el-form-item label="用户名:" prop="name">
@@ -27,6 +31,10 @@
 export default {
   data () {
     return {
+      // 进度条
+      loading: false,
+      // base64图片
+      dafaultImg: require('../../assets/img/default-cover.jpg'),
       userInfo: {
         name: '',
         intro: '',
@@ -56,6 +64,23 @@ export default {
     }
   },
   methods: {
+    //   上传用户头像
+    uploadUserImg (params) {
+      // 进度条
+      this.loading = true
+      let data = new FormData() // 定义图片
+      data.append('photo', params.file)
+      this.$axios({
+        method: 'patch',
+        url: '/user/photo',
+        data
+      }).then(() => {
+        this.loading = false
+        this.getUserInfo()
+        // eventBus.$emit('updateUserInfo') // 相当于打出了一个电话 电话号是updateUserInfo
+      })
+    },
+    //   获取用户信息
     getUserInfo () {
       this.$axios({
         url: '/user/profile'
@@ -63,6 +88,7 @@ export default {
         this.userInfo = res.data
       })
     },
+    // 修改用户信息
     saveUserInfo () {
       // 校验
       this.$refs.userForm.validate(isOK => {
@@ -83,5 +109,12 @@ export default {
   }
 }
 </script>
-<style>
+<style lang='less' scoped>
+.head-image {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-left: 500px;
+}
 </style>
